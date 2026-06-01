@@ -7,7 +7,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // スムーズスクロールの設定
     setupSmoothScroll();
+    
+    // モバイル対応の初期化
+    initializeMobileSupport();
 });
+
+
+// ========== モバイルサポート（タッチデバイス対応） ==========
+
+function initializeMobileSupport() {
+    // ボタンのタッチ時間を短縮するため、アクティブ状態を追加
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.addEventListener('touchstart', function() {
+            this.style.opacity = '0.8';
+        });
+        button.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+        });
+    });
+    
+    // リンクのタッチ対応
+    const links = document.querySelectorAll('a');
+    links.forEach(function(link) {
+        link.addEventListener('touchstart', function() {
+            this.style.opacity = '0.7';
+        });
+        link.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+        });
+    });
+}
 
 
 // ========== スクロール時のアニメーション ==========
@@ -141,7 +171,38 @@ window.addEventListener('scroll', function() {
 });
 
 
+// ========== ウィンドウサイズ変更時の処理 ==========
+
+// レスポンシブデザイン対応：ウィンドウサイズ変更時に調整
+let resizeTimer;
+window.addEventListener('resize', function() {
+    // デバウンス処理：リサイズイベントが頻繁に発火するため、少し遅延させて処理
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        // 必要に応じてここに処理を追加
+        console.log('ウィンドウサイズが変更されました。');
+    }, 250);
+});
+
+
+// ========== ダークモード対応（オプション） ==========
+
+// システムのダークモード設定に対応
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    // ダークモードが有効な場合の処理（ここに追加可能）
+    console.log('ダークモード対応の処理がここに入ります');
+}
+
+// ダークモード設定の変更を監視
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    console.log('ダークモード設定が変更されました:', e.matches);
+});
+
+
 // ========== 初期化完了のログ ==========
 
 // 開発者が確認用（F12のコンソールで確認可能）
 console.log('Webサイトの初期化が完了しました。共創工学部へようこそ！');
+console.log('モバイル対応：有効');
+console.log('タッチデバイス対応：有効');
+
